@@ -1,5 +1,4 @@
-# Webpack Starter Kit
-# OOGA BOOGA!
+# Webpack Starter Kit (we good)
 
 ## Clone This Repo
 
