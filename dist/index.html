@@ -5,9 +5,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Webpack Starter Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC&family=Pacifico&family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
 <body>
-  <img src="./images/turing-logo.png" alt="turing logo">
+  <nav class="welcome-message"><h1>Welcome to Overlook</h1></nav>
+  <section class="main-section">
+    <p class="total-amount-spent">You have spent $0 on bookings with us.</p>
+    <section class="customers-bookings">
+      <p class="calendar-message">Here is your calendar.</p>
+      <section class="calendar">
+      </section>
+    </section>
+    
+  </section>
   
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
   <script src="bundle.js"></script>
