@@ -1,3 +1,67 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
-  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+  background: url('../images/hotel-background.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 92%;
+  width: 99%;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15%;
+  font-family: 'Cormorant SC', serif;
+  font-size: xxx-large;
+}
+
+.main-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border-style: dotted; */
+  height: 100%;
+  width: 100%;
+
+}
+
+.total-amount-spent {
+  font-size: 20px;
+}
+
+.calendar-message {
+  margin-top: 7%;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 80%;
+  width: 80%;
+}
+
+.customers-bookings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.6);
+  border-radius: 5%;
+  height: 80%;
+  width: 80%;
+  margin-top: -4%;
+  z-index: -1;
+  position:relative;
+}
+
+.calendar-day {
+  border-style: solid;
+  height: 19%;
+  width: 13%;
 }
