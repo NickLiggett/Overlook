@@ -25,26 +25,84 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border-style: dotted; */
-  height: 100%;
+  height: 92%;
   width: 100%;
 
 }
 
+.login-form {
+  width: 25%;
+  height: 20%;
+  margin-top: 15%;
+  background: rgba(255,255,255,0.6);
+  border-radius: 5%;
+}
+
 .total-amount-spent {
+  font-family: 'Cormorant SC', serif;
   font-size: 20px;
 }
 
-.calendar-message {
-  margin-top: 7%;
+.bookings-message {
+  font-family: 'Cormorant SC', serif;
+  /* margin-top: 10%; */
 }
 
-.calendar {
+.bookings {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  height: 80%;
-  width: 80%;
+  height: 75%;
+  width: 75%;
+  overflow-y: auto;
+  font-family: 'Cormorant SC', serif;
+  /* border-style: dashed; */
+}
+
+.add-booking {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: x-large;
+  font-family: 'Cormorant SC', serif;
+  width: 20%;
+  height: 15%;
+  margin-top: 1%;
+  background: rgba(255,255,255,0.6);
+}
+
+#datePicker {
+  font-size: x-large;
+  background-color: rgb(255,255,255,0.8);
+  font-family: 'Cormorant SC', serif;
+  width: 40%;
+}
+
+.available-rooms {
+  width: 30%;
+  height: 10%;
+  border-style: solid;
+  margin: 1px;
+}
+
+.available-rooms-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 95%;
+  height: 100%;
+  /* border-style: dotted; */
+}
+
+.search-button {
+  width: 130px;
+  height: 30px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 20px;
+  color: aliceblue;
+  background-color: blue;
+  border-radius: 8px;
 }
 
 .customers-bookings {
@@ -53,15 +111,23 @@ nav {
   align-items: center;
   background: rgba(255,255,255,0.6);
   border-radius: 5%;
-  height: 80%;
-  width: 80%;
-  margin-top: -4%;
+  height: auto;
+  min-height: 60%;
+  width: 50%;
+  /* margin-top: -4%; */
   z-index: -1;
   position:relative;
 }
 
-.calendar-day {
+.single-booking {
+  text-align: center;
+  font-size: 17px;
+  width: 18%;
+  height: 10%;
+  margin: 10px;
   border-style: solid;
-  height: 19%;
-  width: 13%;
+}
+
+.hidden {
+  display: none;
 }
