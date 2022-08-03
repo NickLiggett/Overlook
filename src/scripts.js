@@ -10,11 +10,20 @@ import './images/turing-logo.png'
 
 const bookings = document.querySelector('.bookings')
 const welcomeMessage = document.querySelector('.welcome-message')
-
 const totalSpent = document.querySelector('.total-amount-spent')
 const searchButton = document.querySelector('.search-button')
 const datePicker = document.querySelector('#datePicker')
 const mainDisplay = document.querySelector('.customers-bookings')
+const availableRoomsWapper = document.querySelector('.available-rooms-wrapper')
+const filterWrapper = document.querySelector('.filter-wrapper')
+const backToBookings = document.querySelector('.back-to-bookings')
+const filterButton = document.querySelector('.filter-button')
+const suiteButton = document.querySelector('#suite')
+const singleRoomButton = document.querySelector('#singleRoom')
+const resSuiteButton = document.querySelector('#residentialSuite')
+const junSuiteButton = document.querySelector('#juniorSuite')
+const filterSection = document.querySelector('.filter-section')
+
 
 let newCustomer
 let bookingsData
@@ -24,6 +33,19 @@ window.addEventListener('load', () => {
     fetchBookings()
     fetchRooms()
     fetchCustomers()
+})
+
+backToBookings.addEventListener('click', () => {
+    hide(filterWrapper)
+    show(mainDisplay)
+})
+
+filterButton.addEventListener('click', () => {
+    filterByRoomType()
+})
+
+filterSection.addEventListener('click', (event) => {
+    radioHandler(event)
 })
 
 searchButton.addEventListener('click', () => {
@@ -68,16 +90,57 @@ function fetchCustomers() {
 }
 
 function showAvailableRooms(input) {
-    // let spliced = input.split('-').join('/')
-    let result = newCustomer.selectDate(input.split('-').join('/'), bookingsData, roomsData)
-    hide(totalSpent)
-    mainDisplay.innerHTML = `<h1>Available Rooms on ${newCustomer.dateDesired}</h1><section class="available-rooms-wrapper"></section>`
-    const availableRoomsWapper = document.querySelector('.available-rooms-wrapper')
-    result.forEach(element => {
+    hide(mainDisplay)
+    show(filterWrapper)
+    let availableRooms = newCustomer.selectDate(input.split('-').join('/'), bookingsData, roomsData)
+    availableRoomsWapper.innerHTML = ''
+    availableRooms.forEach(element => {
         availableRoomsWapper.innerHTML += `<div class="available-rooms">Room ${element.number}: ${element.roomType} <br>Beds: ${element.numBeds} ${element.bedSize} <br>Cost per night: $${element.costPerNight}</div>`
     })
 }
 
+function filterByRoomType() {
+    let types = []
+    if (suiteButton.checked) {
+        types.push('suite')
+    } else if (singleRoomButton.checked) {
+        types.push('single room')
+    } else if (resSuiteButton.checked) {
+        types.push('residential suite')
+    } else if (junSuiteButton.checked) {
+        types.push('junior suite')
+    }
+    let availableRooms = newCustomer.selectDate(newCustomer.dateDesired, bookingsData, roomsData)
+    let filteredRooms = availableRooms.filter(room => {
+        if (types.includes(room.roomType)) {
+            return room 
+        }
+    })
+    availableRoomsWapper.innerHTML = ''
+    filteredRooms.forEach(element => {
+        availableRoomsWapper.innerHTML += `<div class="available-rooms">Room ${element.number}: ${element.roomType} <br>Beds: ${element.numBeds} ${element.bedSize} <br>Cost per night: $${element.costPerNight}</div>`
+    })
+}
+
+function radioHandler(event) {
+    if (event.target.id === 'singleRoom') {
+        suiteButton.checked = false
+        resSuiteButton.checked = false
+        junSuiteButton.checked = false
+    } else if (event.target.id === 'suite') {
+        singleRoomButton.checked = false
+        resSuiteButton.checked = false
+        junSuiteButton.checked = false
+    } else if (event.target.id === 'residentialSuite') {
+        singleRoomButton.checked = false
+        suiteButton.checked = false
+        junSuiteButton.checked = false
+    } else if (event.target.id === 'juniorSuite') {
+        singleRoomButton.checked = false
+        suiteButton.checked = false
+        resSuiteButton.checked = false
+    }
+}
 
 function hide(element) {
 element.classList.add('hidden')
