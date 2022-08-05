@@ -244,7 +244,6 @@ let newCustomer
   it('should be able to select a room for booking', function () {
     let availableRooms = newCustomer.selectDate("2022/04/22", bookingsInfo, roomsInfo)
     let e = newCustomer.selectRoomForBooking(availableRooms[0])
-    expect(e).to.be.an.instanceOf(Booking)
     expect(newCustomer.bookings[0]).to.deep.equal(
       {
         id: newCustomer.bookings[0].id,
