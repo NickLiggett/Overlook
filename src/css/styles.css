@@ -27,6 +27,9 @@ nav {
   font-size: xxx-large;
 }
 
+button, input {
+  cursor: pointer;
+}
 /* .main-section {
   display: flex;
   flex-direction: column;
@@ -87,7 +90,7 @@ nav {
 }
 
 .radio {
-  margin-right: -5%;
+  margin-right: -3%;
 }
 
 .filter-section {
@@ -99,9 +102,9 @@ nav {
 }
 
 .filter-button {
-  margin-top: 2%;
-  width: 20%;
-  height: 15%;
+  margin-top: 0%;
+  width: 25%;
+  height: 10%;
   font-family: 'Cormorant SC', serif;
   font-size: 20px;
   color: aliceblue;
@@ -110,7 +113,11 @@ nav {
  
 }
 
-.add-booking {
+.single-booking-details {
+  padding: 5%;
+}
+
+.select-date {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -136,7 +143,7 @@ nav {
   justify-content: center;
   text-align: center;
   width: 30%;
-  height: 15%;
+  height: 25%;
   background-color: #7500ff;
   margin: 1%;
   color: aliceblue;
@@ -151,14 +158,67 @@ nav {
   overflow-y: auto;
 }
 
-.search-button {
+.room-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-size: 25px;
   width: 40%;
-  height: 30%;
+  height: 60%;
+  background-color: #7500ff;
+  margin: 1%;
+  color: aliceblue;
+  
+}
+
+.search-button {
+  width: 30%;
+  height: 20%;
   font-family: 'Cormorant SC', serif;
   font-size: 20px;
   color: aliceblue;
   background-color: #7500ff;
   border-radius: 8px;
+}
+
+.select-message {
+  font-size: 100%;
+  margin: 0%;
+}
+
+.filter-apology-message {
+  font-size: 40px;
+  text-align: center;
+}
+
+.confirm-booking-button {
+  width: 25%;
+  height: 15%;
+  font-family: 'Cormorant SC', serif;
+  font-size: 20px;
+  color: aliceblue;
+  background-color: #7500ff;
+  border-radius: 8px;
+  margin-top: 10%;
+}
+
+.confirm-booking-button-wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.book-room-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.6);
+  border-radius: 5%;
+  height: 70%;
+  width: 50%;
+  font-family: 'Cormorant SC', serif;
 }
 
 .customers-bookings {
@@ -169,7 +229,6 @@ nav {
   border-radius: 5%;
   height: 70%;
   width: 50%;
-  z-index: -1;
   font-family: 'Cormorant SC', serif;
 }
 
