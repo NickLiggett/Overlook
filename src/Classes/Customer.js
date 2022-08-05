@@ -1,6 +1,4 @@
 
-import Booking from "./Booking"
-
 class Customer {
     constructor(id, name) {
         this.id = id
@@ -38,7 +36,6 @@ class Customer {
             }
             return id
         }
-        // let newBooking = new Booking(getBookingID(), this.id, this.dateDesired, room.number)
         let newBooking = {id: getBookingID(), userID: this.id, date: this.dateDesired, roomNumber: room.number}
         this.bookings.unshift(newBooking)
         return newBooking
