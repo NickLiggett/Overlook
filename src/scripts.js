@@ -1,7 +1,4 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
 
-// An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 import Customer from './Classes/Customer'
 import Booking from './Classes/Booking'
@@ -83,14 +80,12 @@ function fetchBookings() {
 }
 
 function fetchPostBookings() {
-    console.log(newCustomer.id, newCustomer.dateDesired, parseInt(desiredRoom))
     fetch('http://localhost:3001/api/v1/bookings', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ "userID": newCustomer.id, "date": newCustomer.dateDesired, "roomNumber": parseInt(desiredRoom) })
     })
     .then(response => response.json())
-    // .then(data => data)
     .then(() => {
         fetch('http://localhost:3001/api/v1/bookings')
         .then(response => response.json())
