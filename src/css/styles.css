@@ -13,7 +13,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 nav {
@@ -23,20 +23,44 @@ nav {
   height: 15%;
   font-family: 'Cormorant SC', serif;
   font-size: xxx-large;
-  margin-top: 100px;
-  margin-bottom: 30px;
+  margin-top: 0%;
+  margin-bottom: 0%;
 }
 
 button, input {
   cursor: pointer;
 }
 
-.login-form {
-  width: 25%;
-  height: 20%;
-  margin-top: 15%;
-  background: rgba(255,255,255,0.6);
+.login-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 30%;
+  margin-top: 5%;
+  background: rgba(255,255,255,0.8);
   border-radius: 5%;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-input {
+  margin: 5%;
+  margin-left: 15%;
+}
+
+.login-button {
+  width: 60%;
+  align-self: center;
+  margin-top: 10%;
+  font-family: 'Cormorant SC', serif;
+  font-size: 20px;
+  color: aliceblue;
+  background-color: #7500ff;
+  border-radius: 8px;
 }
 
 .total-amount-spent {
@@ -65,7 +89,7 @@ button, input {
 
 .filter-wrapper {
   display: flex;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.8);
   flex-direction: column;
   align-items: center;
   height: 100%;
@@ -95,12 +119,14 @@ button, input {
   align-items: center;
   margin-top: 3%;
   width: 100%;
+  font-weight: bolder;
+  font-size: 16px;
 }
 
 .filter-button {
   margin-top: 0%;
   width: 25%;
-  height: 10%;
+  height: 5%;
   font-family: 'Cormorant SC', serif;
   font-size: 20px;
   color: aliceblue;
@@ -122,9 +148,9 @@ button, input {
   font-family: 'Cormorant SC', serif;
   width: 450px;
   height: 230px;
-  margin-top: 20px;
-  margin-bottom: 50px;
-  background: rgba(255,255,255,0.6);
+  margin-top: 1%;
+  margin-bottom: 0%;
+  background: rgba(255,255,255,0.8);
 }
 
 #date-picker {
@@ -154,7 +180,7 @@ button, input {
   justify-content: space-evenly;
   flex-wrap: wrap;
   width: 95%;
-  height: 100%;
+  height: 69%;
   overflow-y: auto;
 }
 
@@ -223,7 +249,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.8);
   border-radius: 5%;
   height: 70%;
   width: 50%;
@@ -234,7 +260,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.8);
   border-radius: 5%;
   height: 640px;
   width: 50%;
