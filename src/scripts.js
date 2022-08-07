@@ -28,15 +28,25 @@ const backToAvailableRoomsButton = document.querySelector('#backButton')
 const confirmBookingButton = document.querySelector('#confirmButton')
 const selectDateMessage = document.querySelector('.select-message')
 const availableRoomsMesssage = document.querySelector('.available-rooms-message')
+const loginPage = document.querySelector('.login-form-wrapper')
+const usernameInput = document.querySelector('#usernameInput')
+const passwordInput = document.querySelector('#passwordInput')
+const loginButton = document.querySelector('.login-button')
+const loginErrorMessage = document.querySelector('.login-error-message')
 
 let newCustomer
 let bookingsData
 let roomsData
 let desiredRoom
 
-window.addEventListener('load', () => {
-    fetchBookings()
-    fetchRooms()
+window.addEventListener('click', () => {
+    // fetchBookings()
+    // fetchRooms()
+})
+
+loginButton.addEventListener('click', (event) => {
+    event.preventDefault()
+    loginErrorHandler()
 })
 
 confirmBookingButton.addEventListener('click', () => {
@@ -117,15 +127,21 @@ function fetchCustomers() {
     fetch('http://localhost:3001/api/v1/customers')
     .then(response => response.json())
     .then(data => {
-        let i = Math.floor(Math.random() * 50) + 1
-        newCustomer = new Customer(data.customers[i].id, data.customers[i].name)
+        let customerID = usernameInput.value.split('customer')[1]
+        let customerName = data.customers.filter(customer => {
+          if (customer.id === parseInt(customerID)) {
+            return customer
+          }
+        })[0].name
+        newCustomer = new Customer(parseInt(customerID), customerName)
         populateBookings(newCustomer)
-})}
+    }
+)}
 
 function populateBookings(currentCust) {
     welcomeMessage.innerText = `Welcome to Overlook, ${currentCust.name}`
     currentCust.bookings = bookingsData.filter(booking => booking.userID === currentCust.id)
-    currentCust.bookings.sort((a, b) => a.date.charAt(6) - b.date.charAt(6)) // <--- not sorting
+    currentCust.bookings.sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
     bookings.innerHTML = ''
         currentCust.bookings.forEach(element => {
             new Booking(element.id, element.userID, element.date, element.roomNumber)
@@ -165,6 +181,11 @@ function showBookRoomPage(event)  {
 }
 
 function showAvailableRooms(input) {
+    allButton.checked = true
+    singleRoomButton.checked = false
+    suiteButton.checked = false
+    resSuiteButton.checked = false
+    junSuiteButton.checked = false
     if (input !== '') {
         hide(mainDisplay)
         hide(selectDateBox)
@@ -214,6 +235,10 @@ function filterByRoomType() {
     }
 }
 
+function login(username, password) {
+
+}
+
 function radioHandler(event) {
     if (event.target.id === 'singleRoom') {
         suiteButton.checked = false
@@ -240,6 +265,70 @@ function radioHandler(event) {
         suiteButton.checked = false
         resSuiteButton.checked = false
         junSuiteButton.checked = false
+    }
+}
+
+function loginErrorHandler() {
+    if (usernameInput.value !== 'customer1' &&
+        usernameInput.value !== 'customer2' &&
+        usernameInput.value !== 'customer3' &&
+        usernameInput.value !== 'customer4' &&
+        usernameInput.value !== 'customer5' &&
+        usernameInput.value !== 'customer6' &&
+        usernameInput.value !== 'customer7' &&
+        usernameInput.value !== 'customer8' &&
+        usernameInput.value !== 'customer9' &&
+        usernameInput.value !== 'customer10' &&
+        usernameInput.value !== 'customer11' &&
+        usernameInput.value !== 'customer12' &&
+        usernameInput.value !== 'customer13' &&
+        usernameInput.value !== 'customer14' &&
+        usernameInput.value !== 'customer15' &&
+        usernameInput.value !== 'customer16' &&
+        usernameInput.value !== 'customer17' &&
+        usernameInput.value !== 'customer18' &&
+        usernameInput.value !== 'customer19' &&
+        usernameInput.value !== 'customer20' &&
+        usernameInput.value !== 'customer21' &&
+        usernameInput.value !== 'customer22' &&
+        usernameInput.value !== 'customer23' &&
+        usernameInput.value !== 'customer24' &&
+        usernameInput.value !== 'customer25' &&
+        usernameInput.value !== 'customer26' &&
+        usernameInput.value !== 'customer27' &&
+        usernameInput.value !== 'customer28' &&
+        usernameInput.value !== 'customer29' &&
+        usernameInput.value !== 'customer30' &&
+        usernameInput.value !== 'customer31' &&
+        usernameInput.value !== 'customer32' &&
+        usernameInput.value !== 'customer33' &&
+        usernameInput.value !== 'customer34' &&
+        usernameInput.value !== 'customer35' &&
+        usernameInput.value !== 'customer36' &&
+        usernameInput.value !== 'customer37' &&
+        usernameInput.value !== 'customer38' &&
+        usernameInput.value !== 'customer39' &&
+        usernameInput.value !== 'customer40' &&
+        usernameInput.value !== 'customer41' &&
+        usernameInput.value !== 'customer42' &&
+        usernameInput.value !== 'customer43' &&
+        usernameInput.value !== 'customer44' &&
+        usernameInput.value !== 'customer45' &&
+        usernameInput.value !== 'customer46' &&
+        usernameInput.value !== 'customer47' &&
+        usernameInput.value !== 'customer48' &&
+        usernameInput.value !== 'customer49' &&
+        usernameInput.value !== 'customer50') {
+        loginErrorMessage.innerText = 'Incorrect Username, try again.'
+        
+    } else if (passwordInput.value !== 'overlook2021') {
+        loginErrorMessage.innerText = 'Incorrect Password, try again.'
+    } else {
+    hide(loginPage)
+    show(mainDisplay)
+    show(selectDateBox)
+    fetchBookings()
+    fetchRooms()
     }
 }
 
