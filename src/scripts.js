@@ -33,24 +33,41 @@ const usernameInput = document.querySelector('#usernameInput')
 const passwordInput = document.querySelector('#passwordInput')
 const loginButton = document.querySelector('.login-button')
 const loginErrorMessage = document.querySelector('.login-error-message')
+const showPasswordBox = document.querySelector('.show-password')
+const backToLoginButton = document.querySelector('.back-to-login-button')
 
 let newCustomer
 let bookingsData
 let roomsData
 let desiredRoom
 
-window.addEventListener('click', () => {
-    // fetchBookings()
-    // fetchRooms()
-})
+let userNames = ['customer1', 'customer2', 'customer3', 'customer4', 'customer5', 'customer6', 'customer7', 'customer8', 'customer9', 'customer10', 'customer11', 'customer12', 'customer13', 'customer14', 'customer15', 'customer16', 'customer17', 'customer18', 'customer19', 'customer20', 'customer21', 'customer22', 'customer23', 'customer24', 'customer25', 'customer26', 'customer27', 'customer28', 'customer29', 'customer30', 'customer31', 'customer32', 'customer33', 'customer34', 'customer35', 'customer36', 'customer37', 'customer38', 'customer39', 'customer40', 'customer41', 'customer42', 'customer43', 'customer44', 'customer45', 'customer46', 'customer47', 'customer48', 'customer49', 'customer50']
+
+// window.addEventListener('click', () => {
+//     fetchBookings()
+//     fetchRooms()
+// })
 
 loginButton.addEventListener('click', (event) => {
     event.preventDefault()
-    loginErrorHandler()
+    loginHandler()
+    
 })
 
 confirmBookingButton.addEventListener('click', () => {
     fetchPostBookings()
+})
+
+backToLoginButton.addEventListener('click', () => {
+    hide(mainDisplay)
+    hide(filterWrapper)
+    hide(selectDateBox)
+    hide(bookRoomPage)
+    hide(backToLoginButton)
+    show(loginPage)
+    usernameInput.value = ''
+    passwordInput.value = ''
+    welcomeMessage.innerText = 'Welcome to Overlook'
 })
 
 backToBookings.addEventListener('click', () => {
@@ -60,6 +77,8 @@ backToBookings.addEventListener('click', () => {
     show(selectDateBox)
     show(mainDisplay)
 })
+
+showPasswordBox.addEventListener('click', toggleShowPassword)
 
 availableRoomsWapper.addEventListener('click', (event) => {
     showBookRoomPage(event)
@@ -139,6 +158,7 @@ function fetchCustomers() {
 )}
 
 function populateBookings(currentCust) {
+    show(backToLoginButton)
     welcomeMessage.innerText = `Welcome to Overlook, ${currentCust.name}`
     currentCust.bookings = bookingsData.filter(booking => booking.userID === currentCust.id)
     currentCust.bookings.sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
@@ -235,10 +255,6 @@ function filterByRoomType() {
     }
 }
 
-function login(username, password) {
-
-}
-
 function radioHandler(event) {
     if (event.target.id === 'singleRoom') {
         suiteButton.checked = false
@@ -268,67 +284,26 @@ function radioHandler(event) {
     }
 }
 
-function loginErrorHandler() {
-    if (usernameInput.value !== 'customer1' &&
-        usernameInput.value !== 'customer2' &&
-        usernameInput.value !== 'customer3' &&
-        usernameInput.value !== 'customer4' &&
-        usernameInput.value !== 'customer5' &&
-        usernameInput.value !== 'customer6' &&
-        usernameInput.value !== 'customer7' &&
-        usernameInput.value !== 'customer8' &&
-        usernameInput.value !== 'customer9' &&
-        usernameInput.value !== 'customer10' &&
-        usernameInput.value !== 'customer11' &&
-        usernameInput.value !== 'customer12' &&
-        usernameInput.value !== 'customer13' &&
-        usernameInput.value !== 'customer14' &&
-        usernameInput.value !== 'customer15' &&
-        usernameInput.value !== 'customer16' &&
-        usernameInput.value !== 'customer17' &&
-        usernameInput.value !== 'customer18' &&
-        usernameInput.value !== 'customer19' &&
-        usernameInput.value !== 'customer20' &&
-        usernameInput.value !== 'customer21' &&
-        usernameInput.value !== 'customer22' &&
-        usernameInput.value !== 'customer23' &&
-        usernameInput.value !== 'customer24' &&
-        usernameInput.value !== 'customer25' &&
-        usernameInput.value !== 'customer26' &&
-        usernameInput.value !== 'customer27' &&
-        usernameInput.value !== 'customer28' &&
-        usernameInput.value !== 'customer29' &&
-        usernameInput.value !== 'customer30' &&
-        usernameInput.value !== 'customer31' &&
-        usernameInput.value !== 'customer32' &&
-        usernameInput.value !== 'customer33' &&
-        usernameInput.value !== 'customer34' &&
-        usernameInput.value !== 'customer35' &&
-        usernameInput.value !== 'customer36' &&
-        usernameInput.value !== 'customer37' &&
-        usernameInput.value !== 'customer38' &&
-        usernameInput.value !== 'customer39' &&
-        usernameInput.value !== 'customer40' &&
-        usernameInput.value !== 'customer41' &&
-        usernameInput.value !== 'customer42' &&
-        usernameInput.value !== 'customer43' &&
-        usernameInput.value !== 'customer44' &&
-        usernameInput.value !== 'customer45' &&
-        usernameInput.value !== 'customer46' &&
-        usernameInput.value !== 'customer47' &&
-        usernameInput.value !== 'customer48' &&
-        usernameInput.value !== 'customer49' &&
-        usernameInput.value !== 'customer50') {
+function loginHandler() {
+    console.log(userNames)
+    if (!userNames.some(userName => userName === usernameInput.value)) {
         loginErrorMessage.innerText = 'Incorrect Username, try again.'
-        
     } else if (passwordInput.value !== 'overlook2021') {
         loginErrorMessage.innerText = 'Incorrect Password, try again.'
     } else {
-    hide(loginPage)
-    show(mainDisplay)
-    show(selectDateBox)
-    fetchBookings()
-    fetchRooms()
+        hide(loginPage)
+        show(mainDisplay)
+        show(selectDateBox)
+        fetchBookings()
+        fetchRooms()
+    }
+}
+
+function toggleShowPassword() {
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text'
+    } else {
+        passwordInput.type = 'password'
     }
 }
 
@@ -339,3 +314,5 @@ element.classList.add('hidden')
 function show(element) {
     element.classList.remove('hidden')
     }
+
+
