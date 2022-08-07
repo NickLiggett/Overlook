@@ -10,7 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC&family=Pacifico&family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
 <body>
-  <nav class="welcome-message"><h1>Welcome to Overlook</h1></nav>
+  <nav>
+    <button class="back-to-login-button hidden">Sign Out</button>
+    <h1 class="welcome-message">Welcome to Overlook</h1>
+  </nav>
     <section class="login-form-wrapper">
       <form class="login-form">
         <h1 class="login-error-message"></h1>
@@ -18,7 +21,10 @@
         <input aria-label="username" id="usernameInput" type="text">
         </div>
         <div class="login-input">Password:
-        <input aria-label="password" id="passwordInput" type="text">
+        <input aria-label="password" id="passwordInput" type="password">
+        </div>
+        <div class="show-password-wrapper">
+        <input class="show-password" type="checkbox">Show Password
         </div>
         <button class="login-button">Login</button>
       </form>
