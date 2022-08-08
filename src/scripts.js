@@ -4,6 +4,7 @@ import Customer from './Classes/Customer'
 import Booking from './Classes/Booking'
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+import customersData from './data/customersData';
 
 const bookings = document.querySelector('.bookings')
 const welcomeMessage = document.querySelector('.welcome-message')
@@ -40,7 +41,9 @@ const managerScreenWrapper = document.querySelector('.manager-screen-wrapper')
 const managerDatePicker = document.querySelector('#manager-date-picker')
 const managerScreenMessage = document.querySelector('#manager-dash-message')
 const managerStats = document.querySelector('.manager-stats')
-const managerSearchButton = document.querySelector('.manager-search-button')
+const managerDateSearchButton = document.querySelector('#manager-date-search-button')
+const managerCustomerSearchButton = document.querySelector('#search-customer-button')
+const customerSearchInput = document.querySelector('#customer-name-search')
 
 let newCustomer
 let bookingsData
@@ -69,8 +72,30 @@ loginButton.addEventListener('click', (event) => {
     }
 })
 
-managerSearchButton.addEventListener('click', () => {
+managerDateSearchButton.addEventListener('click', () => {
     populateManagerAvailableRooms(managerDatePicker.value.split('-').join('/'))
+})
+
+managerCustomerSearchButton.addEventListener('click', () => {
+
+    let custName = customerSearchInput.value.toLowerCase()
+    let theCustomer = customersData.customers.find(customer => customer.name.toLowerCase() === custName)
+    let theBookings = bookingsData.filter(booking => booking.userID === theCustomer.id).sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
+    managerAvailableRooms.style = `border-style: solid; border-width: 2px; height: 60%; width: 80%; overflow: auto; background-color: #7500ff;`
+    managerAvailableRooms.innerHTML = `<div class="customer-details"><p id="customers-name">${theCustomer.name}</p></div>`
+    theBookings.forEach(booking => {
+        document.querySelector('.customer-details').innerHTML += `<div class="customers-booking"><p>Room: ${booking.roomNumber}</p><p>Date: ${booking.date}</p></div>`
+    })
+    let totalSpent = roomsData.reduce((sum, room) => {
+        theBookings.forEach(booking => {
+            if (booking.roomNumber === room.number) {
+                sum += room.costPerNight
+            }
+        })
+        return sum
+    }, 0).toFixed(2)
+    document.querySelector('#revenue').innerHTML = `Total Spent: $${totalSpent}`
+    document.querySelector('#percent-occupied').innerHTML = ``
 })
 
 confirmBookingButton.addEventListener('click', () => {
@@ -225,7 +250,7 @@ function populateManagerAvailableRooms(input) {
         }, [])
 
         rooms.forEach(room => {
-            managerAvailableRooms.innerHTML += `<div class="single-manager-available-room" id="m${room.number}">Room: ${room.number} Type: ${room.roomType} Bidet: ${room.bidet} Beds: ${room.numBeds} ${room.bedSize} Price: $${room.costPerNight}</div>`
+            managerAvailableRooms.innerHTML += `<div class="single-manager-available-room" id="m${room.number}"><p class="sub-stat">Room: ${room.number}</p><p class="sub-stat">Type: ${room.roomType}</p><p class="sub-stat">Bidet: ${room.bidet}</p><p class="sub-stat">Beds: ${room.numBeds} ${room.bedSize}</p><p class="sub-stat">Price: $${room.costPerNight}</p></div>`
         })
 
         let totalRev = roomsData.reduce((sum, room) => {
@@ -233,11 +258,11 @@ function populateManagerAvailableRooms(input) {
                 sum += room.costPerNight
             }
             return sum
-        }, 0)
+        }, 0).toFixed(2)
         
         let percentBooked = (todaysBookings.length/25) * 100
 
-        managerStats.innerHTML = `<div class="stat" id="revenue">Todays Total Revenue: $${totalRev}</div><br><div class="stat" id="percent-occupied">Percent Booked: ${percentBooked}%</div>`
+        managerStats.innerHTML = `<div class="stat" id="revenue">Total Revenue: $${totalRev}</div><br><div class="stat" id="percent-occupied">Percent Booked: ${percentBooked}%</div>`
     })
     })
 }

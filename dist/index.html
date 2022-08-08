@@ -31,8 +31,14 @@
     </section>
     <section class="manager-screen-wrapper hidden">
       <div class="manager-screen"><p id="manager-dash-message">Total Available Rooms for:</p>
-        <form><input aria-label="Calendar" id="manager-date-picker" type="date" required="required"></input></form>
-        <button class="manager-search-button">Search</button>
+        <form class="manager-controls">
+          <input aria-label="Calendar" id="manager-date-picker" type="date" required="required"></input>
+          <input id="customer-name-search" type="text" placeholder="Customer Name..."></input>
+        </form>
+        <div class="button-holder">
+          <button class="manager-search" id="manager-date-search-button">Search for Date</button>
+          <button class="manager-search" id="search-customer-button">Search for Customer</button>
+        </div>
       </div>
       <div class="manager-available-rooms">
       </div>
