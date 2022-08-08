@@ -113,6 +113,42 @@ button, input {
   padding: 30px;
 }
 
+.manager-screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  height: 70%;
+  background: rgba(255,255,255,0.8);
+  font-family: 'Cormorant SC', serif;
+  border-radius: 5%;
+}
+
+.manager-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 30px;
+  margin-top: 2%;
+}
+
+.manager-available-rooms {
+  border-style: solid;
+  border-width: 2px;
+  height: 60%;
+  width: 80%;
+  overflow: auto;
+}
+
+.single-manager-available-room {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  height: 7%;
+  color: aliceblue;
+  background-color: #7500ff;
+}
+
 .bookings {
   display: flex;
   flex-wrap: wrap;
@@ -205,6 +241,8 @@ button, input {
   width: 30%;
   height: 25%;
   background-color: #7500ff;
+  font-family: 'Cormorant SC', serif;
+  font-size: 115%;
   margin: 1%;
   color: aliceblue;
   cursor: pointer;
@@ -249,6 +287,31 @@ form {
   border-radius: 8px;
   margin-top: 0px;
   margin-bottom: 15px;
+}
+
+.manager-search-button {
+  width: 120px;
+  height: 25px;
+  font-family: 'Cormorant SC', serif;
+  font-size: 50%;
+  color: aliceblue;
+  background-color: #7500ff;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+#manager-dash-message {
+  margin: 0%;
+  margin-bottom: 1%;
+}
+
+.manager-stats {
+  margin-top: 3%;
+}
+
+.stat {
+  font-size: 25px;
 }
 
 .select-message {
