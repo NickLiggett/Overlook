@@ -35,6 +35,12 @@ const loginButton = document.querySelector('.login-button')
 const loginErrorMessage = document.querySelector('.login-error-message')
 const showPasswordBox = document.querySelector('.show-password')
 const backToLoginButton = document.querySelector('.back-to-login-button')
+const managerAvailableRooms = document.querySelector('.manager-available-rooms')
+const managerScreenWrapper = document.querySelector('.manager-screen-wrapper')
+const managerDatePicker = document.querySelector('#manager-date-picker')
+const managerScreenMessage = document.querySelector('#manager-dash-message')
+const managerStats = document.querySelector('.manager-stats')
+const managerSearchButton = document.querySelector('.manager-search-button')
 
 let newCustomer
 let bookingsData
@@ -43,15 +49,28 @@ let desiredRoom
 
 let userNames = ['customer1', 'customer2', 'customer3', 'customer4', 'customer5', 'customer6', 'customer7', 'customer8', 'customer9', 'customer10', 'customer11', 'customer12', 'customer13', 'customer14', 'customer15', 'customer16', 'customer17', 'customer18', 'customer19', 'customer20', 'customer21', 'customer22', 'customer23', 'customer24', 'customer25', 'customer26', 'customer27', 'customer28', 'customer29', 'customer30', 'customer31', 'customer32', 'customer33', 'customer34', 'customer35', 'customer36', 'customer37', 'customer38', 'customer39', 'customer40', 'customer41', 'customer42', 'customer43', 'customer44', 'customer45', 'customer46', 'customer47', 'customer48', 'customer49', 'customer50']
 
-// window.addEventListener('click', () => {
-//     fetchBookings()
-//     fetchRooms()
-// })
 
 loginButton.addEventListener('click', (event) => {
     event.preventDefault()
-    loginHandler()
-    
+    let year = new Date().getFullYear()
+    let month = new Date().getMonth() + 1
+    let day = new Date().getDate()
+    if (day.toString().length === 1) {
+        day = `0${day}`
+    }
+    if (month.toString().length === 1) {
+        month = `0${month}`
+    }
+    let today = `${year}/${month}/${day}`
+    if (usernameInput.value === 'manager' && passwordInput.value === 'overlook2021') {
+        managerLogin(today)
+    } else {
+        loginHandler()
+    }
+})
+
+managerSearchButton.addEventListener('click', () => {
+    populateManagerAvailableRooms(managerDatePicker.value.split('-').join('/'))
 })
 
 confirmBookingButton.addEventListener('click', () => {
@@ -64,10 +83,12 @@ backToLoginButton.addEventListener('click', () => {
     hide(selectDateBox)
     hide(bookRoomPage)
     hide(backToLoginButton)
+    hide(managerScreenWrapper)
     show(loginPage)
     usernameInput.value = ''
     passwordInput.value = ''
     welcomeMessage.innerText = 'Welcome to Overlook'
+    loginErrorMessage.innerText = ''
 })
 
 backToBookings.addEventListener('click', () => {
@@ -178,6 +199,49 @@ function populateBookings(currentCust) {
         totalSpent.innerText = `You have spent $${total} on bookings with us.`
 }
 
+function populateManagerAvailableRooms(input) {
+    fetch('http://localhost:3001/api/v1/bookings')
+    .then(response => response.json())
+    .then(data => {
+        bookingsData = data.bookings
+        fetch('http://localhost:3001/api/v1/rooms')
+        .then(response => response.json())
+        .then(data => {
+        roomsData = data.rooms
+        managerAvailableRooms.innerHTML = ''
+        
+        let todaysBookings = bookingsData.reduce((list, booking) => {
+            if (booking.date === input) {
+                list.push(booking.roomNumber)
+            }
+            return list
+        }, [])
+        
+        let rooms = roomsData.reduce((list, room) => {
+            if (!todaysBookings.includes(room.number)) {
+                list.push(room)
+            }
+            return list
+        }, [])
+
+        rooms.forEach(room => {
+            managerAvailableRooms.innerHTML += `<div class="single-manager-available-room" id="m${room.number}">Room: ${room.number} Type: ${room.roomType} Bidet: ${room.bidet} Beds: ${room.numBeds} ${room.bedSize} Price: $${room.costPerNight}</div>`
+        })
+
+        let totalRev = roomsData.reduce((sum, room) => {
+            if (todaysBookings.includes(room.number)) {
+                sum += room.costPerNight
+            }
+            return sum
+        }, 0)
+        
+        let percentBooked = (todaysBookings.length/25) * 100
+
+        managerStats.innerHTML = `<div class="stat" id="revenue">Todays Total Revenue: $${totalRev}</div><br><div class="stat" id="percent-occupied">Percent Booked: ${percentBooked}%</div>`
+    })
+    })
+}
+
 function showBookRoomPage(event)  {
     desiredRoom = event.target.id
     if (event.target.classList.contains('available-rooms')) {
@@ -216,7 +280,7 @@ function showAvailableRooms(input) {
         availableRoomsWapper.innerHTML = ''
         if (availableRooms.length !== 0) {
             availableRooms.forEach(element => {
-                availableRoomsWapper.innerHTML += `<div class="available-rooms" id="${element.number}">Room ${element.number}: ${element.roomType} <br>Beds: ${element.numBeds} ${element.bedSize} <br>Cost per night: $${element.costPerNight}</div>`
+                availableRoomsWapper.innerHTML += `<button class="available-rooms" id="${element.number}">Room ${element.number}: ${element.roomType} <br>Beds: ${element.numBeds} ${element.bedSize} <br>Cost per night: $${element.costPerNight}</button>`
             })
         } else {
             availableRoomsWapper.innerHTML = `<p class="filter-apology-message">We fiercely apologize! There are no rooms available on this date.`
@@ -248,7 +312,7 @@ function filterByRoomType() {
     availableRoomsWapper.innerHTML = ''
     if (filteredRooms.length !== 0) {
     filteredRooms.forEach(element => {
-        availableRoomsWapper.innerHTML += `<div class="available-rooms" id="${element.number}">Room ${element.number}: ${element.roomType} <br>Beds: ${element.numBeds} ${element.bedSize} <br>Cost per night: $${element.costPerNight}</div>`
+        availableRoomsWapper.innerHTML += `<button class="available-rooms" id="${element.number}">Room ${element.number}: ${element.roomType} <br>Beds: ${element.numBeds} ${element.bedSize} <br>Cost per night: $${element.costPerNight}</button>`
         })
     } else {
         availableRoomsWapper.innerHTML = `<p class="filter-apology-message">We fiercely apologize! There are no rooms of this type available on this date.`
@@ -285,8 +349,7 @@ function radioHandler(event) {
 }
 
 function loginHandler() {
-    console.log(userNames)
-    if (!userNames.some(userName => userName === usernameInput.value)) {
+    if (!userNames.some(userName => userName === usernameInput.value) && usernameInput.value !== 'manager') {
         loginErrorMessage.innerText = 'Incorrect Username, try again.'
     } else if (passwordInput.value !== 'overlook2021') {
         loginErrorMessage.innerText = 'Incorrect Password, try again.'
@@ -296,7 +359,16 @@ function loginHandler() {
         show(selectDateBox)
         fetchBookings()
         fetchRooms()
+        
     }
+}
+
+function managerLogin(today) {
+    hide(loginPage)
+    show(backToLoginButton)
+    show(managerScreenWrapper)
+    managerScreenMessage.innerText = `Total Available Rooms for: ${today}`
+    populateManagerAvailableRooms(today)
 }
 
 function toggleShowPassword() {
