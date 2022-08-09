@@ -2,7 +2,7 @@
 
 ## Introduction
 
-- This project simulates the functionality of a fantasty hotel.
+- This project simulates the functionality of a hotel website.
 - If you login as a customer, you will see a list of room bookings for that particular customer. 
 - The customer can search for future dates to see what rooms are available to book. A customer can select from a filtered list of available rooms, book one, and see their updated bookings list.
 - If you login as a manager, you will see a list of available rooms, the total revenue, and the percentage booked for today's date.
