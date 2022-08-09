@@ -31,13 +31,31 @@
     </section>
     <section class="manager-screen-wrapper hidden">
       <div class="manager-screen"><p id="manager-dash-message">Total Available Rooms for:</p>
-        <form><input aria-label="Calendar" id="manager-date-picker" type="date" required="required"></input></form>
-        <button class="manager-search-button">Search</button>
+        <div class="form-wrapper">
+        <form class="manager-controls">
+          <input aria-label="Calendar" id="manager-date-picker" type="date" required="required">
+          <button class="manager-search" id="manager-date-search-button">Search for Date</button>
+        </form>
+        <form class="manager-controls">
+          <input id="customer-name-search" type="text" placeholder="Customer Name...">
+          <button class="manager-search" id="search-customer-button">Search for Customer</button>
+        </form>
+      </div>  
+        <!-- <div class="button-holder">
+        </div> -->
       </div>
       <div class="manager-available-rooms">
       </div>
       <div class="manager-stats">
       </div>
+      <div class="new-booking-input-wrapper hidden">
+        <div>Room #: <input class="new-booking-input" id="new-booking-room-number" type="text" placeholder="Enter Room #..."></div>
+        <div>Date: <input class="new-booking-input" id="new-booking-date" type="text" placeholder="mm/dd/yyyy"></div>
+      </div>
+      <div class="add-delete-button-wrapper">
+        <button class="create-booking hidden">Create Booking</button>
+        <button class="delete-booking hidden">Delete Booking</button>
+      </div>  
     </section>
     <section class="customers-bookings hidden">
       <p class="total-amount-spent">You have spent $0 on bookings with us.</p>
@@ -48,11 +66,11 @@
     <section class="filter-wrapper hidden">
       <section class="filter-section">
         <button class="back-to-bookings">Go Back to Your Bookings</button>
-        <input class="radio" type="radio" id="all" checked>All</input>
-        <input class="radio" type="radio" id="suite">Suite</input>
-        <input class="radio" type="radio" id="singleRoom">Single Room</input>
-        <input class="radio" type="radio" id="residentialSuite">Residential Suite</input>
-        <input class="radio" type="radio" id="juniorSuite">Junior Suite</input>
+        <input class="radio" type="radio" id="all" checked>All
+        <input class="radio" type="radio" id="suite">Suite
+        <input class="radio" type="radio" id="singleRoom">Single Room
+        <input class="radio" type="radio" id="residentialSuite">Residential Suite
+        <input class="radio" type="radio" id="juniorSuite">Junior Suite
       </section>
         <button class="filter-button">Filter By Room Type</button>
         <h1 class="available-rooms-message">Available Rooms</h1>
@@ -61,7 +79,9 @@
     </section>
     <section class="select-date hidden">
       <h1 class="select-message">Select a date to book your stay!</h1>
-      <form><input aria-label="Calendar" id="date-picker" type="date" required="required"></input></form>
+      <form>
+        <input aria-label="Calendar" id="date-picker" type="date" required="required">
+      </form>
       <button class="search-button">Search</button>
     </section>
     <section class="book-room-page hidden">
