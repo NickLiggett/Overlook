@@ -295,7 +295,6 @@ function deleteCustomerBooking(customerName) {
                     bookingsData.forEach(booking => {
                         if (booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum) {
                             bookingID = booking.id
-                            console.log(!bookingsData.some(booking => booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum))
                         } else if (!bookingsData.some(booking => booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum)) {
                             throw new Error(`That booking does not exist.`) 
                         }
