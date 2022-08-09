@@ -135,7 +135,7 @@ button, input {
 
 .manager-controls {
   display: flex;
-  width: 100%;
+  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -145,6 +145,34 @@ button, input {
   height: 60%;
   width: 80%;
   overflow: auto;
+  background-color: #7500ff;
+}
+
+.new-booking-input-wrapper {
+  display: flex;
+  justify-content: space-around;
+  width: 50%;
+  margin: 2%;
+}
+
+.add-delete-button-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+  margin-bottom: 5%;
+}
+
+.create-booking, .delete-booking {
+  width: 35%;
+  height: 80%;
+  color: aliceblue;
+  background-color: #7500ff;
+  border-radius: 8px;
+  margin-bottom: 3%;
+  font-family: 'Cormorant SC', serif;
+  font-size: 20px;
+  margin-left: 5%;
+  margin-right: 0%;
 }
 
 .button-holder {
@@ -285,6 +313,12 @@ button, input {
   margin: 1%;
   color: aliceblue;
   border-style: double;
+}
+
+.form-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 form {

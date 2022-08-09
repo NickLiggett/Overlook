@@ -4,7 +4,7 @@ import Customer from './Classes/Customer'
 import Booking from './Classes/Booking'
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
-import customersData from './data/customersData';
+// import customersData from './data/customersData';
 
 const bookings = document.querySelector('.bookings')
 const welcomeMessage = document.querySelector('.welcome-message')
@@ -44,11 +44,17 @@ const managerStats = document.querySelector('.manager-stats')
 const managerDateSearchButton = document.querySelector('#manager-date-search-button')
 const managerCustomerSearchButton = document.querySelector('#search-customer-button')
 const customerSearchInput = document.querySelector('#customer-name-search')
+const newBookingInputWrapper = document.querySelector('.new-booking-input-wrapper')
+const createBookingButton = document.querySelector('.create-booking')
+const deleteBookingButton = document.querySelector('.delete-booking')
+const newBookingRoomNumberInput = document.querySelector('#new-booking-room-number')
+const newBookingDateInput = document.querySelector('#new-booking-date')
 
 let newCustomer
 let bookingsData
 let roomsData
 let desiredRoom
+let customerSearchName
 
 let userNames = ['customer1', 'customer2', 'customer3', 'customer4', 'customer5', 'customer6', 'customer7', 'customer8', 'customer9', 'customer10', 'customer11', 'customer12', 'customer13', 'customer14', 'customer15', 'customer16', 'customer17', 'customer18', 'customer19', 'customer20', 'customer21', 'customer22', 'customer23', 'customer24', 'customer25', 'customer26', 'customer27', 'customer28', 'customer29', 'customer30', 'customer31', 'customer32', 'customer33', 'customer34', 'customer35', 'customer36', 'customer37', 'customer38', 'customer39', 'customer40', 'customer41', 'customer42', 'customer43', 'customer44', 'customer45', 'customer46', 'customer47', 'customer48', 'customer49', 'customer50']
 
@@ -72,30 +78,30 @@ loginButton.addEventListener('click', (event) => {
     }
 })
 
-managerDateSearchButton.addEventListener('click', () => {
+createBookingButton.addEventListener('click', () => {
+    createNewBooking(customerSearchName)
+})
+
+deleteBookingButton.addEventListener('click', () => {
+    let formatDate = newBookingDateInput.value.split('/')
+    let theDate = `${formatDate[2]}/${formatDate[0]}/${formatDate[1]}`
+    deleteCustomerBooking(customerSearchName, theDate, parseInt(newBookingRoomNumberInput.value))
+})
+
+managerDateSearchButton.addEventListener('click', (event) => {
+    event.preventDefault()
+    hide(newBookingInputWrapper)
+    hide(createBookingButton)
+    hide(deleteBookingButton)
     populateManagerAvailableRooms(managerDatePicker.value.split('-').join('/'))
 })
 
-managerCustomerSearchButton.addEventListener('click', () => {
-
-    let custName = customerSearchInput.value.toLowerCase()
-    let theCustomer = customersData.customers.find(customer => customer.name.toLowerCase() === custName)
-    let theBookings = bookingsData.filter(booking => booking.userID === theCustomer.id).sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
-    managerAvailableRooms.style = `border-style: solid; border-width: 2px; height: 60%; width: 80%; overflow: auto; background-color: #7500ff;`
-    managerAvailableRooms.innerHTML = `<div class="customer-details"><p id="customers-name">${theCustomer.name}</p></div>`
-    theBookings.forEach(booking => {
-        document.querySelector('.customer-details').innerHTML += `<div class="customers-booking"><p>Room: ${booking.roomNumber}</p><p>Date: ${booking.date}</p></div>`
-    })
-    let totalSpent = roomsData.reduce((sum, room) => {
-        theBookings.forEach(booking => {
-            if (booking.roomNumber === room.number) {
-                sum += room.costPerNight
-            }
-        })
-        return sum
-    }, 0).toFixed(2)
-    document.querySelector('#revenue').innerHTML = `Total Spent: $${totalSpent}`
-    document.querySelector('#percent-occupied').innerHTML = ``
+managerCustomerSearchButton.addEventListener('click', (event) => {
+    show(newBookingInputWrapper)
+    show(createBookingButton)
+    show(deleteBookingButton)
+    managerSearchForCustomer(event)
+    customerSearchName = customerSearchInput.value.toLowerCase()
 })
 
 confirmBookingButton.addEventListener('click', () => {
@@ -109,6 +115,9 @@ backToLoginButton.addEventListener('click', () => {
     hide(bookRoomPage)
     hide(backToLoginButton)
     hide(managerScreenWrapper)
+    hide(newBookingInputWrapper)
+    hide(createBookingButton)
+    hide(deleteBookingButton)
     show(loginPage)
     usernameInput.value = ''
     passwordInput.value = ''
@@ -203,17 +212,118 @@ function fetchCustomers() {
     }
 )}
 
-function populateBookings(currentCust) {
-    show(backToLoginButton)
-    welcomeMessage.innerText = `Welcome to Overlook, ${currentCust.name}`
-    currentCust.bookings = bookingsData.filter(booking => booking.userID === currentCust.id)
-    currentCust.bookings.sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
-    bookings.innerHTML = ''
-        currentCust.bookings.forEach(element => {
-            new Booking(element.id, element.userID, element.date, element.roomNumber)
-            bookings.innerHTML += `<div class="single-booking"><p class="single-booking-details">Room Number: ${element.roomNumber} Date: ${element.date}</p></div><br>`
+function createNewBooking(customerName) {
+
+    fetch('http://localhost:3001/api/v1/customers')
+    .then(response => response.json())
+    .then(data => {
+    let customersData = data.customers
+    let roomNum = parseInt(newBookingRoomNumberInput.value)
+    let dateInput = newBookingDateInput.value.split('/')
+    let date = `${dateInput[2]}/${dateInput[0]}/${dateInput[1]}`
+    let theCustomer = customersData.find(customer => customer.name.toLowerCase() === customerName)
+    fetch('http://localhost:3001/api/v1/bookings')
+        .then(response => response.json())
+        .then(data => {
+            data.bookings.forEach(booking => {
+               if (booking.date === date && booking.roomNumber === roomNum) {
+                throw new Error('That room is already booked for the selected date.')
+            }  
+            })        
+            
+    fetch('http://localhost:3001/api/v1/bookings', {
+        method: 'POST',
+        body: JSON.stringify({ "userID": theCustomer.id, "date": date, "roomNumber": roomNum }),
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(() => fetch('http://localhost:3001/api/v1/bookings')
+        .then(response => response.json())
+        .then(data => {
+            let bookingsData = data.bookings
+            let theBookings = bookingsData.filter(booking => booking.userID === theCustomer.id).sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
+            managerAvailableRooms.innerHTML = `<div class="customer-details"><p id="customers-name">${theCustomer.name}</p></div>`
+            theBookings.forEach(booking => {
+                document.querySelector('.customer-details').innerHTML += `<div class="customers-booking"><p>Room: ${booking.roomNumber}</p><p>Date: ${booking.date}</p></div>`
             })
-        let total = currentCust.bookings.reduce((sum, booking) => {
+            let totalSpent = roomsData.reduce((sum, room) => {
+                theBookings.forEach(booking => {
+                    if (booking.roomNumber === room.number) {
+                        sum += room.costPerNight
+                    }
+                })
+                return sum
+            }, 0).toFixed(2)
+            document.querySelector('#revenue').innerHTML = `Total Spent: $${totalSpent}`
+            document.querySelector('#percent-occupied').innerHTML = ``
+        })
+    )
+        })
+        .catch(error => {
+            document.querySelector('#revenue').innerText = error.message
+        })
+    })
+    
+    }
+
+function deleteCustomerBooking(customerName, date, roomNum) {
+            fetch('http://localhost:3001/api/v1/customers')
+            .then(response => response.json())
+            .then(data => {
+                let customersData = data.customers
+                let theCustomer = customersData.find(customer => customer.name.toLowerCase() === customerName)
+                fetch('http://localhost:3001/api/v1/bookings')
+                .then(response => response.json())
+                .then(data => {
+                    bookingsData = data.bookings
+                    let bookingID
+                    bookingsData.forEach(booking => {
+                        if (booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum) {
+                            bookingID = booking.id
+                        }
+                    })
+                    fetch(`http://localhost:3001/api/v1/bookings/${bookingID}`, {
+                        method: 'DELETE',
+                        body: JSON.stringify(),
+                        headers: {'Content-Type': 'application/json'}
+                    })
+                    .then(response => response.json())
+                    .then(() => fetch('http://localhost:3001/api/v1/bookings')
+                    .then(response => response.json())
+                    .then(data => {
+                        let bookingsData = data.bookings
+                        let theBookings = bookingsData.filter(booking => booking.userID === theCustomer.id).sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
+                        managerAvailableRooms.innerHTML = `<div class="customer-details"><p id="customers-name">${theCustomer.name}</p></div>`
+                        theBookings.forEach(booking => {
+                            document.querySelector('.customer-details').innerHTML += `<div class="customers-booking"><p>Room: ${booking.roomNumber}</p><p>Date: ${booking.date}</p></div>`
+                        })
+                        let totalSpent = roomsData.reduce((sum, room) => {
+                            theBookings.forEach(booking => {
+                                if (booking.roomNumber === room.number) {
+                                    sum += room.costPerNight
+                                }
+                            })
+                            return sum
+                        }, 0).toFixed(2)
+                        document.querySelector('#revenue').innerHTML = `Total Spent: $${totalSpent}`
+                        document.querySelector('#percent-occupied').innerHTML = ``
+                    })
+                    )}
+                    )})
+                    .catch(error => console.log(error))
+                }
+                
+                function populateBookings(currentCust) {
+                    show(backToLoginButton)
+                    welcomeMessage.innerText = `Welcome to Overlook, ${currentCust.name}`
+                    currentCust.bookings = bookingsData.filter(booking => booking.userID === currentCust.id)
+                    currentCust.bookings.sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
+                    bookings.innerHTML = ''
+                    currentCust.bookings.forEach(element => {
+                        new Booking(element.id, element.userID, element.date, element.roomNumber)
+                        bookings.innerHTML += `<div class="single-booking"><p class="single-booking-details">Room Number: ${element.roomNumber} Date: ${element.date}</p></div><br>`
+                    })
+                    let total = currentCust.bookings.reduce((sum, booking) => {
             roomsData.forEach(room => {
              if (booking.roomNumber === room.number) {
                 sum += room.costPerNight
@@ -225,6 +335,11 @@ function populateBookings(currentCust) {
 }
 
 function populateManagerAvailableRooms(input) {
+    let splitInput = input.split('/')
+    let date = `${splitInput[1]}/${splitInput[2]}/${splitInput[0]}`
+    managerScreenMessage.innerText = `Total Available Rooms for: ${date}`
+    managerDatePicker.value = input.split('/').join('-')
+
     fetch('http://localhost:3001/api/v1/bookings')
     .then(response => response.json())
     .then(data => {
@@ -344,6 +459,34 @@ function filterByRoomType() {
     }
 }
 
+function managerSearchForCustomer(event) {
+        event.preventDefault()
+        fetch('http://localhost:3001/api/v1/customers')
+        .then(response => response.json())
+        .then(data => {
+        let customersData = data.customers
+        let custName = customerSearchInput.value.toLowerCase()
+        let theCustomer = customersData.find(customer => customer.name.toLowerCase() === custName)
+        let theBookings = bookingsData.filter(booking => booking.userID === theCustomer.id).sort((a, b) => a.date.charAt(6) - b.date.charAt(6))
+        managerAvailableRooms.innerHTML = `<div class="customer-details"><p id="customers-name">${theCustomer.name}</p></div>`
+        theBookings.forEach(booking => {
+            let formatDate = booking.date.split('/')
+            let date = `${formatDate[1]}/${formatDate[2]}/${formatDate[0]}`
+            document.querySelector('.customer-details').innerHTML += `<div class="customers-booking"><p>Room: ${booking.roomNumber}</p><p>Date: ${date}</p></div>`
+        })
+        let totalSpent = roomsData.reduce((sum, room) => {
+            theBookings.forEach(booking => {
+                if (booking.roomNumber === room.number) {
+                    sum += room.costPerNight
+                }
+            })
+            return sum
+        }, 0).toFixed(2)
+        document.querySelector('#revenue').innerHTML = `Total Spent: $${totalSpent}`
+        document.querySelector('#percent-occupied').innerHTML = ``
+        })
+}
+
 function radioHandler(event) {
     if (event.target.id === 'singleRoom') {
         suiteButton.checked = false
@@ -392,7 +535,6 @@ function managerLogin(today) {
     hide(loginPage)
     show(backToLoginButton)
     show(managerScreenWrapper)
-    managerScreenMessage.innerText = `Total Available Rooms for: ${today}`
     populateManagerAvailableRooms(today)
 }
 
