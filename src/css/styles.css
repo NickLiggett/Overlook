@@ -159,7 +159,7 @@ button, input {
   display: flex;
   justify-content: space-evenly;
   width: 50%;
-  margin-bottom: 5%;
+  margin-bottom: 1%;
 }
 
 .create-booking, .delete-booking {

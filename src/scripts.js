@@ -83,9 +83,7 @@ createBookingButton.addEventListener('click', () => {
 })
 
 deleteBookingButton.addEventListener('click', () => {
-    let formatDate = newBookingDateInput.value.split('/')
-    let theDate = `${formatDate[2]}/${formatDate[0]}/${formatDate[1]}`
-    deleteCustomerBooking(customerSearchName, theDate, parseInt(newBookingRoomNumberInput.value))
+    deleteCustomerBooking(customerSearchName)
 })
 
 managerDateSearchButton.addEventListener('click', (event) => {
@@ -222,6 +220,11 @@ function createNewBooking(customerName) {
     let dateInput = newBookingDateInput.value.split('/')
     let date = `${dateInput[2]}/${dateInput[0]}/${dateInput[1]}`
     let theCustomer = customersData.find(customer => customer.name.toLowerCase() === customerName)
+    let todaysDate = new Date().toJSON().slice(0, 10).split('-')
+    let splitDate = date.split('/')
+    let date1 = new Date(parseInt(todaysDate[0]), parseInt(todaysDate[1]) - 1, parseInt(todaysDate[2]))
+    let date2 = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]))
+    if (date2 >= date1) {
     fetch('http://localhost:3001/api/v1/bookings')
         .then(response => response.json())
         .then(data => {
@@ -262,16 +265,28 @@ function createNewBooking(customerName) {
         .catch(error => {
             document.querySelector('#revenue').innerText = error.message
         })
+    } else {
+        document.querySelector('#revenue').innerText = 'You cannot book a past date.'
+    }
     })
+
     
     }
 
-function deleteCustomerBooking(customerName, date, roomNum) {
+function deleteCustomerBooking(customerName) {
             fetch('http://localhost:3001/api/v1/customers')
             .then(response => response.json())
             .then(data => {
                 let customersData = data.customers
+                let roomNum = parseInt(newBookingRoomNumberInput.value)
+                let dateInput = newBookingDateInput.value.split('/')
+                let date = `${dateInput[2]}/${dateInput[0]}/${dateInput[1]}`
+                let todaysDate = new Date().toJSON().slice(0, 10).split('-')
+                let splitDate = date.split('/')
+                let date1 = new Date(parseInt(todaysDate[0]), parseInt(todaysDate[1]) - 1, parseInt(todaysDate[2]))
+                let date2 = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]))
                 let theCustomer = customersData.find(customer => customer.name.toLowerCase() === customerName)
+                if (date2 >= date1) {
                 fetch('http://localhost:3001/api/v1/bookings')
                 .then(response => response.json())
                 .then(data => {
@@ -280,6 +295,9 @@ function deleteCustomerBooking(customerName, date, roomNum) {
                     bookingsData.forEach(booking => {
                         if (booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum) {
                             bookingID = booking.id
+                            console.log(!bookingsData.some(booking => booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum))
+                        } else if (!bookingsData.some(booking => booking.userID === theCustomer.id && booking.date === date && booking.roomNumber === roomNum)) {
+                            throw new Error(`That booking does not exist.`) 
                         }
                     })
                     fetch(`http://localhost:3001/api/v1/bookings/${bookingID}`, {
@@ -309,8 +327,13 @@ function deleteCustomerBooking(customerName, date, roomNum) {
                         document.querySelector('#percent-occupied').innerHTML = ``
                     })
                     )}
-                    )})
-                    .catch(error => console.log(error))
+                    )
+                    .catch(error => document.querySelector('#revenue').innerHTML = error.message)
+                    } else {
+                        document.querySelector('#revenue').innerHTML = `You cannot delete a past booking.`
+                    }
+                })
+                
                 }
                 
                 function populateBookings(currentCust) {
