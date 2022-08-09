@@ -433,7 +433,11 @@ function showAvailableRooms(input) {
     suiteButton.checked = false
     resSuiteButton.checked = false
     junSuiteButton.checked = false
-    if (input !== '') {
+    let todaysDate = new Date().toJSON().slice(0, 10).split('-')
+    let splitDate = input.split('-')
+    let date1 = new Date(parseInt(todaysDate[0]), parseInt(todaysDate[1]) - 1, parseInt(todaysDate[2]))
+    let date2 = new Date(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2]))
+    if (input !== '' && date2 >= date1) {
         hide(mainDisplay)
         hide(selectDateBox)
         show(filterWrapper)
@@ -449,9 +453,10 @@ function showAvailableRooms(input) {
             availableRoomsWapper.innerHTML = `<p class="filter-apology-message">We fiercely apologize! There are no rooms available on this date.`
         }
     } else {
-        selectDateMessage.innerText = 'Please select a date to book your stay.'
+        selectDateMessage.innerText = 'Please select a valid date to book your stay.'
     }
 }
+
 
 function filterByRoomType() {
     let types = []
