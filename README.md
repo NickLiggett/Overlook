@@ -44,4 +44,4 @@
 - [StackOverflow](https://stackoverflow.com/)
 
 ## Contributors
-  - [[Nick Liggett](https://github.com/NickLiggett)]
+  - [Nick Liggett](https://github.com/NickLiggett)
