@@ -13,7 +13,7 @@
 - Clone down the Back End repository by running `git clone git@github.com:turingschool-examples/overlook-api.git`.
 - `cd` into that repository and run `npm install`.
 - Once the install is complete, run `npm start` to run the local server.
-- Then clone the Front End repository by running `git clone git@github.com:NickLiggett/Overlook.git`.
+- Then clone down the Front End repository by running `git clone git@github.com:NickLiggett/Overlook.git`.
 - `cd` into that repository and run `npm install`.
 - Once the install is complete, run `npm start` to run the Application's User Interface.
 
